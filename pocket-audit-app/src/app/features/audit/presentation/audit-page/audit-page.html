@@ -1,0 +1,43 @@
+<div class="min-h-screen">
+  <header>
+    <div class="max-w-5xl">
+      <div class="flex-items">
+        <div class="pulse-dot"></div>
+        <h1>PocketAudit WMS</h1>
+      </div>
+      <span class="badge">Coletor Ativo</span>
+    </div>
+  </header>
+
+  <main class="max-w-5xl">
+    <section>
+      <div class="section-title">📷 Scanner de Código de Barras</div>
+      <app-scanner-view (barcodeScanned)="onBarcodeScrolled($any($event))"></app-scanner-view>
+    </section>
+
+    <div class="grid-kpis">
+      <div class="kpi-card esperado">
+        <p class="label">Esperado Total</p>
+        <p class="value">{{ totalSystemQuantity() || 0 }} <span>unidades</span></p>
+      </div>
+      <div class="kpi-card contado">
+        <p class="label">Contado (Físico)</p>
+        <p class="value">{{ totalCountedQuantity() || 0 }} <span>unidades</span></p>
+      </div>
+    </div>
+
+    <section class="action-bar">
+      <span class="label-io">Carga de Dados:</span>
+      <input type="file" accept=".csv" (change)="onFileSelected($event)" />
+      <button (click)="exportAdjustment()" class="btn-export">Exportar Ajuste</button>
+    </section>
+
+    <section style="padding: 0; overflow: hidden;">
+      <div class="list-header">
+        <h2>Itens em Auditoria</h2>
+        <span class="counter">{{ products().length }} SKUs carregados</span>
+      </div>
+      <app-product-list [productsList]="products()"></app-product-list>
+    </section>
+  </main>
+</div>

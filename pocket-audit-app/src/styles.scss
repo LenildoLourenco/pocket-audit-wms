@@ -1,0 +1,30 @@
+/* Reset Operacional e Variáveis de Cor (Modo Escuro Industrial) */
+:root {
+  --bg-main: #0f172a;       /* Slate 900 */
+  --bg-card: #1e293b;       /* Slate 800 */
+  --bg-input: #334155;      /* Slate 700 */
+  --border-color: #475569;  /* Slate 600 */
+  --text-main: #f8fafc;     /* Slate 50 */
+  --text-muted: #94a3b8;    /* Slate 400 */
+  
+  /* Status Colors */
+  --primary: #2563eb;       /* Blue 600 */
+  --primary-hover: #3b82f6; 
+  --success: #10b981;       /* Emerald 500 */
+  --success-bg: rgba(16, 185, 129, 0.1);
+  --warning: #f59e0b;       /* Amber 500 */
+  --warning-bg: rgba(245, 158, 11, 0.1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  -webkit-font-smoothing: antialiased;
+}

@@ -1,0 +1,21 @@
+<div class="scanner-container">
+  @if (showScanner) {
+    <zxing-scanner
+      [formats]="allowedFormats"
+      (scanSuccess)="handleScanSuccess($event)"
+      (permissionResponse)="onHasPermission($event)"
+      [autofocusEnabled]="true">
+    </zxing-scanner>
+  }
+
+  <div class="scanner-laser-overlay">
+    <div class="laser-line"></div>
+  </div>
+
+  @if (!hasPermission) {
+    <div class="permission-warning">
+      <p>Aguardando permissão da câmera...</p>
+      <span>Se estiver no celular, certifique-se de estar usando uma conexão segura ou use o computador para testes iniciais.</span>
+    </div>
+  }
+</div>
