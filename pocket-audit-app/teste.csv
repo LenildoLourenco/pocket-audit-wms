@@ -1,6 +1,6 @@
-barcode,description,location,systemQuantity,countedQuantity
-7891000715391,Shampoo Hidratação Intensa 400ml,CORREDOR-A-ALCE-1,50,0
-7891024137254,Condicionador Brilho Marítimo 200ml,CORREDOR-A-ALCE-2,35,0
-7896015523112,Creme Hidratante Corporal Ceramidas 200g,CORREDOR-B-ALCE-1,120,0
-7891150022034,Protetor Solar Facial FPS 60 50g,CORREDOR-B-ALCE-3,80,0
-7896045116126,Sérum Facial Ácido Hialurônico 30ml,CORREDOR-C-ALCE-1,15,0
+barcode,description,location,systemQuantity,countedQuantity,abcZone,pickingType
+7891000715391,Shampoo Hidratacao Intensa 400ml,01-A-01,50,0,A,Unidade
+7891024137254,Condicionador Brilho Maritimo 200ml,01-A-02,35,0,A,Unidade
+7896015523112,Creme Hidratante Corporal Ceramidas 200g,02-B-01,120,0,B,Caixa
+7891150022034,Protetor Solar Facial FPS 60 50g,02-B-03,80,0,B,Unidade
+7896045116126,Serum Facial Acido Hialuronico 30ml,03-C-01,15,0,C,Palete

@@ -3,41 +3,83 @@
     <div class="max-w-5xl">
       <div class="flex-items">
         <div class="pulse-dot"></div>
-        <h1>PocketAudit WMS</h1>
+        <h1>PocketAudit WMS Pro</h1>
       </div>
-      <span class="badge">Coletor Ativo</span>
+      <div style="display: flex; gap: 0.5rem; align-items: center;">
+        <span class="badge" style="background: rgba(59,130,246,0.1); color: #3b82f6; border-color: rgba(59,130,246,0.2);">
+          👤 {{ currentUser }}
+        </span>
+        <span class="badge" [ngStyle]="{'background': offlineService.isOnline() ? 'rgba(16, 185, 129, 0.1)' : 'rgba(239, 68, 68, 0.1)', 'color': offlineService.isOnline() ? '#10b981' : '#ef4444'}">
+  {{ offlineService.isOnline() ? '⚡ Conectado Cloud' : '⚠️ Modo Offline Ativo' }}
+</span>
+        <span class="badge">Coletor Ativo</span>
+      </div>
     </div>
   </header>
 
   <main class="max-w-5xl">
-    <section>
-      <div class="section-title">📷 Scanner de Código de Barras</div>
+    <section *ngIf="!isInventoryClosed()">
+      <div class="section-title">📷 Scanner de Código de Barras ativo</div>
       <app-scanner-view (barcodeScanned)="onBarcodeScrolled($any($event))"></app-scanner-view>
     </section>
 
     <div class="grid-kpis">
       <div class="kpi-card esperado">
-        <p class="label">Esperado Total</p>
-        <p class="value">{{ totalSystemQuantity() || 0 }} <span>unidades</span></p>
+        <p class="label">Esperado Total (TOTVS)</p>
+        <p class="value">
+          {{ (!isBlindMode() || isInventoryClosed()) ? totalSystemQuantity() : '***' }} 
+          <span>unidades</span>
+        </p>
       </div>
       <div class="kpi-card contado">
-        <p class="label">Contado (Físico)</p>
-        <p class="value">{{ totalCountedQuantity() || 0 }} <span>unidades</span></p>
+        <p class="label">Contado (Físico Total)</p>
+        <p class="value">{{ totalCountedQuantity() }} <span>unidades</span></p>
       </div>
     </div>
 
     <section class="action-bar">
-      <span class="label-io">Carga de Dados:</span>
-      <input type="file" accept=".csv" (change)="onFileSelected($event)" />
-      <button (click)="exportAdjustment()" class="btn-export">Exportar Ajuste</button>
+      <div style="display: flex; flex-direction: column; gap: 0.25rem;">
+        <span class="label-io" style="font-weight: 600;">Carga Inicial de Rota:</span>
+        <input type="file" accept=".csv" (change)="onFileSelected($event)" />
+      </div>
+
+      <div style="margin-left: auto; display: flex; gap: 0.5rem;">
+        <button *ngIf="!isInventoryClosed() && products().length > 0" (click)="closeAuditLote()" class="btn-export" style="background-color: #ef4444;">
+          🔒 Encerrar Lote & Ver Divergências
+        </button>
+
+        <button *ngIf="isInventoryClosed()" (click)="exportAdjustment()" class="btn-export">
+          📥 Exportar Relatório de Ajuste (.CSV)
+        </button>
+      </div>
     </section>
+
+    <div *ngIf="selectedProductForPhoto()" class="photo-modal-overlay">
+      <div class="photo-card">
+        <h3>Capturar Evidência de Ocorrência</h3>
+        <p>{{ selectedProductForPhoto()?.description }}</p>
+        
+        <label class="btn-camera-trigger">
+          📸 Ligar Câmera do Celular
+          <input type="file" accept="image/*" capture="environment" (change)="handlePhotoCaptured($event)" style="display: none;" />
+        </label>
+        
+        <button class="btn-cancel" (click)="selectedProductForPhoto.set(null)">Cancelar</button>
+      </div>
+    </div>
 
     <section style="padding: 0; overflow: hidden;">
       <div class="list-header">
-        <h2>Itens em Auditoria</h2>
-        <span class="counter">{{ products().length }} SKUs carregados</span>
+        <h2>Itens em Auditoria de Estoque</h2>
+        <span class="counter">{{ products().length }} SKUs carregados nesta zona</span>
       </div>
-      <app-product-list [productsList]="products()"></app-product-list>
+      
+      <app-product-list 
+        [productsList]="products()" 
+        [isBlind]="isBlindMode() && !isInventoryClosed()"
+        [isClosed]="isInventoryClosed()"
+        (triggerPhotoCapture)="openCameraCapture($any($event))">
+      </app-product-list>
     </section>
   </main>
 </div>
